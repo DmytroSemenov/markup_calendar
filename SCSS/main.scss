@@ -1,0 +1,67 @@
+// sass --watch ./SCSS/main.scss ./style.css
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.calendar {
+  margin: 200px auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: 707px;
+
+  div {
+    font-family: Arial;
+    font-size: 30px;
+    text-align: center;
+    line-height: 100px;
+
+    width: 100px;
+    height: 100px;
+    margin: 0 1px 1px 0;
+
+    background-color: #eee;
+    border: 1px solid black;
+
+    cursor: pointer;
+  }
+
+  div:hover {
+    animation-duration: 0.5s;
+    animation-name: slideup;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+  @keyframes slideup {
+    from {
+      background-color: #eee;
+      transform: translateY(0);
+    }
+    to {
+      background-color: pink;
+      transform: translateY(-20px);
+    }
+  }
+
+  @for $date from 1 through 31 {
+    div:nth-child(#{$date})::after {
+      content: '#{$date}';
+    }
+  }
+
+  @for $rest-date from 28 through 31 {
+    &-#{$rest-date} div:nth-child(n + #{$rest-date + 1}) {
+      display: none;
+    }
+  }
+
+  $week-days: 'mon' 0px, 'tue' 101px, 'wed' 202px, 'thu' 303px, 'fri' 404px,
+    'sat' 505px, 'sun' 606px;
+
+  @each $day, $day-number in $week-days {
+    &-#{$day} div:nth-child(1) {
+      margin-left: #{$day-number};
+    }
+  }
+}
